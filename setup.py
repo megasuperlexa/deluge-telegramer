@@ -55,7 +55,8 @@ __long_description__ = """
 Send notifications, add and view torrents on Deluge
 using Telegram messenger
 """
-__pkg_data__ = {__plugin_name__.lower(): ["data/*"]}
+__pkg_data__ = {__plugin_name__.lower(): ["data/*"],
+                "telegramer.include.certifi": ["cacert.pem"]}
 packages = find_packages()
 
 setup(
