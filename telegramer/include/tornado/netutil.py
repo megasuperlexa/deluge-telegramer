@@ -571,7 +571,7 @@ def ssl_options_to_context(
     assert all(k in _SSL_CONTEXT_KEYWORDS for k in ssl_options), ssl_options
     # Can't use create_default_context since this interface doesn't
     # tell us client vs server.
-    context = ssl.SSLContext(ssl_options.get("ssl_version", ssl.PROTOCOL_SSLv23))
+    context = ssl.SSLContext(ssl_options.get("ssl_version", getattr(ssl, "PROTOCOL_SSLv23", ssl.PROTOCOL_TLS)))
     if "certfile" in ssl_options:
         context.load_cert_chain(
             ssl_options["certfile"], ssl_options.get("keyfile", None)

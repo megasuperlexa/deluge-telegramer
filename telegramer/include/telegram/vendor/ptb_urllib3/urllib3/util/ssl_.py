@@ -40,7 +40,15 @@ _const_compare_digest = getattr(hmac, 'compare_digest',
 
 try:  # Test for SSL features
     import ssl
-    from ssl import wrap_socket, CERT_NONE, PROTOCOL_SSLv23
+    from ssl import CERT_NONE
+    try:
+        from ssl import wrap_socket
+    except ImportError:
+        wrap_socket = None
+    try:
+        from ssl import PROTOCOL_SSLv23
+    except ImportError:
+        from ssl import PROTOCOL_TLS as PROTOCOL_SSLv23
     from ssl import HAS_SNI  # Has SNI?
 except ImportError:
     pass
@@ -246,7 +254,7 @@ def create_urllib3_context(ssl_version=None, cert_reqs=None,
         Constructed SSLContext object with specified options
     :rtype: SSLContext
     """
-    context = SSLContext(ssl_version or ssl.PROTOCOL_SSLv23)
+    context = SSLContext(ssl_version or PROTOCOL_SSLv23)
 
     # Setting the default here, as we may have no ssl module on import
     cert_reqs = ssl.CERT_REQUIRED if cert_reqs is None else cert_reqs
